@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="
+        width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no">
+
+    <title>
+        Interface de Contrôle Véhicule
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+    <div class="rotate-screen">
+
+        <div>
+
+            <div class="rotate-icon">
+                ↻
+            </div>
+
+            <p>
+                Mode paysage requis
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <main class="app">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Interface de Contrôle Véhicule
+                </h1>
+
+                <p>
+                    ESP32 Smart Controller
+                </p>
+
+            </div>
+
+
+            <div class="status-pill">
+
+                <span class="status-dot"></span>
+
+                <span id="modeActif">
+                    IR
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <section class="layout">
+
+
+            <!-- Mode -->
+
+            <section class="panel modes">
+
+                <h2>
+                    Mode
+                </h2>
+
+
+                <div class="mode-grid">
+
+                    <button
+                        id="btnModeIr"
+                        class="active-mode"
+                        onclick="setMode('ir')">
+
+                        IR
+
+                    </button>
+
+
+                    <button
+                        id="btnModeWeb"
+                        onclick="setMode('web')">
+
+                        WEB
+
+                    </button>
+
+
+                    <button
+                        id="btnModeVoice"
+                        onclick="setMode('voice')">
+
+                        VOIX
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Vehicule -->
+
+            <section class="panel vehicle-panel">
+
+                <h2>
+                    Véhicule
+                </h2>
+
+
+                <div class="vehicle-container">
+
+                    <div class="vehicle">
+
+                        <!-- Avant -->
+
+                        <div
+                            id="frontLeft"
+                            class="front-light fl">
+                        </div>
+
+                        <div
+                            id="frontRight"
+                            class="front-light fr">
+                        </div>
+
+
+                        <!-- Clignotants avant -->
+
+                        <div
+                            id="yellowLeft"
+                            class="indicator yl">
+                        </div>
+
+                        <div
+                            id="yellowRight"
+                            class="indicator yr">
+                        </div>
+
+
+                        <!-- Carrosserie -->
+
+                        <div class="car-body">
+
+                            <div class="windshield"></div>
+
+                        </div>
+
+
+                        <!-- Feux arrière -->
+
+                        <div
+                            id="rearLeft"
+                            class="rear-light rl">
+                        </div>
+
+                        <div
+                            id="rearRight"
+                            class="rear-light rr">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Direction -->
+
+            <section class="panel drive">
+
+                <h2>
+                    Direction
+                </h2>
+
+
+                <div class="pad">
+
+                    <button
+                        class="drive-btn up"
+                        data-action="avant">
+
+                        <span>▲</span>
+
+                        Avance
+
+                    </button>
+
+
+                    <button
+                        class="drive-btn left"
+                        data-action="gauche">
+
+                        <span>◀</span>
+
+                        Gauche
+
+                    </button>
+
+
+                    <button
+                        class="drive-btn horn"
+                        data-action="klaxon">
+
+                        <span>●</span>
+
+                        Klaxon
+
+                    </button>
+
+
+                    <button
+                        class="drive-btn right"
+                        data-action="droite">
+
+                        <span>▶</span>
+
+                        Droite
+
+                    </button>
+
+
+                    <button
+                        class="drive-btn down"
+                        data-action="arriere">
+
+                        <span>▼</span>
+
+                        Recule
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Infos -->
+
+            <section class="panel info-panel">
+
+                <h2>
+                    Etat
+                </h2>
+
+
+                <div class="info-grid">
+
+                    <div class="info-item">
+
+                        <small>
+                            Obstacle avant
+                        </small>
+
+                        <strong id="alerteAvant">
+
+                            false
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <small>
+                            Obstacle arrière
+                        </small>
+
+                        <strong id="alerteArriere">
+
+                            false
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <small>
+                            Alarme
+                        </small>
+
+                        <strong id="alarmeMuette">
+
+                            false
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <small>
+                            Connexion
+                        </small>
+
+                        <strong id="connexionEtat">
+
+                            OK
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="log-box">
+
+                    <div id="logText">
+
+                        Système prêt.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Accessoires -->
+
+            <section class="panel accessories">
+              <h2>
+                  Accessoires
+              </h2>
+
+              <div class="access-grid">
+
+                  <button
+                      id="btnFeuxAvant"
+                      onclick="sendCommand('feuxavant')">
+
+                      <span
+                          id="frontIndicator"
+                          class="state-dot">
+                      </span>
+
+                      Feux avant
+
+                      <small
+                          id="frontState">
+
+                          OFF
+
+                      </small>
+
+                  </button>
+
+
+                  <button
+                      id="btnFeuxRouges"
+                      onclick="sendCommand('feuxrouges')">
+
+                      <span
+                          id="rearIndicator"
+                          class="state-dot">
+                      </span>
+
+                      Feux rouges
+
+                      <small
+                          id="rearState">
+
+                          OFF
+
+                      </small>
+
+                  </button>
+
+
+                  <button
+                      class="alarm-btn"
+                      onclick="sendCommand('mute')">
+
+                      Silence
+
+                  </button>
+
+              </div>
+
+          </section>
+
+        </section>
+
+
+        <footer class="footer">
+
+            <span>
+
+                Interface de Contrôle Véhicule
+
+            </span>
+
+
+            <span id="footerState">
+
+                Mode IR actif
+
+            </span>
+
+
+            <span>
+
+                ESP32 • WiFi • Bluetooth • IR
+
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

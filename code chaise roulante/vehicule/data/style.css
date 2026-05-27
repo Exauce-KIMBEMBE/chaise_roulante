@@ -1,0 +1,715 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    font-family: Arial, sans-serif;
+
+    background: #020617;
+    color: white;
+
+}
+
+button {
+
+    border: none;
+
+    border-radius: 18px;
+
+    background: #1e293b;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+button:active {
+
+    transform: scale(.95);
+
+}
+
+
+/* ==================== ROTATION ==================== */
+
+.rotate-screen {
+
+    display: none;
+
+}
+
+
+/* ==================== APPLICATION ==================== */
+
+.app {
+
+    width: 100vw;
+    height: 100vh;
+
+    padding: 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+/* ==================== BARRE HAUT ==================== */
+
+.topbar {
+
+    height: 80px;
+
+    padding: 15px 20px;
+
+    border-radius: 24px;
+
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #111827
+    );
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.topbar h1 {
+
+    font-size: 28px;
+
+}
+
+.topbar p {
+
+    color: #94a3b8;
+
+    margin-top: 5px;
+
+}
+
+.status-pill {
+
+    min-width: 130px;
+
+    height: 45px;
+
+    border-radius: 999px;
+
+    background: #1e293b;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+}
+
+.status-dot {
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 15px #22c55e;
+
+}
+
+
+/* ==================== CONTENU ==================== */
+
+.layout {
+
+    flex: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1.2fr
+        1fr;
+
+    grid-template-rows:
+        1fr
+        1fr;
+
+    gap: 12px;
+
+}
+
+
+.panel {
+
+    background: #0f172a;
+
+    border-radius: 25px;
+
+    padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+.panel h2 {
+
+    font-size: 24px;
+
+}
+
+
+/* ==================== POSITION ==================== */
+
+.modes {
+
+    grid-column: 1;
+    grid-row: 1;
+
+}
+
+.vehicle-panel {
+
+    grid-column: 2;
+    grid-row: 1;
+
+}
+
+.drive {
+
+    grid-column: 3;
+    grid-row: 1;
+
+}
+
+.info-panel {
+
+    grid-column: 1 / span 2;
+    grid-row: 2;
+
+}
+
+.accessories {
+
+    grid-column: 3;
+    grid-row: 2;
+
+}
+
+
+/* ==================== MODE ==================== */
+
+.mode-grid {
+
+    display: grid;
+
+    gap: 12px;
+
+}
+
+.mode-grid button {
+
+    width: 140px;
+    height: 60px;
+
+}
+
+
+/* ==================== VEHICULE ==================== */
+
+.vehicle-container {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+}
+
+.vehicle {
+
+    position: relative;
+
+    width: 220px;
+    height: 320px;
+
+}
+
+.car-body {
+
+    position: absolute;
+
+    width: 100px;
+    height: 250px;
+
+    top: 30px;
+    left: 60px;
+
+    border-radius: 45px;
+
+    background: linear-gradient(
+        #64748b,
+        #475569
+    );
+
+}
+
+.windshield {
+
+    position: absolute;
+
+    width: 70px;
+    height: 60px;
+
+    top: 20px;
+    left: 15px;
+
+    border-radius: 20px;
+
+    background: rgba(
+        120,
+        180,
+        255,
+        .3
+    );
+
+}
+
+
+/* lumières */
+
+.front-light,
+.rear-light,
+.indicator {
+
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: #1e293b;
+
+}
+
+
+/* positions */
+
+.fl {
+
+    top: 35px;
+    left: 65px;
+
+}
+
+.fr {
+
+    top: 35px;
+    right: 65px;
+
+}
+
+.yl {
+
+    top: 75px;
+    left: 35px;
+
+}
+
+.yr {
+
+    top: 75px;
+    right: 35px;
+
+}
+
+.rl {
+
+    bottom: 35px;
+    left: 65px;
+
+}
+
+.rr {
+
+    bottom: 35px;
+    right: 65px;
+
+}
+
+
+/* états */
+
+.front-on {
+
+    background: #60a5fa;
+
+    box-shadow:
+        0 0 25px #60a5fa;
+
+}
+
+.rear-on {
+
+    background: #ef4444;
+
+    box-shadow:
+        0 0 25px #ef4444;
+
+}
+
+.blink {
+
+    background: #facc15;
+
+    box-shadow:
+        0 0 25px #facc15;
+
+}
+
+
+/* ==================== DIRECTION ==================== */
+
+.pad {
+
+    width: 300px;
+    height: 280px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    grid-template-rows:
+        repeat(3,1fr);
+
+    gap: 10px;
+
+}
+
+.drive-btn {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+}
+
+.drive-btn span {
+
+    font-size: 28px;
+
+}
+
+.up {
+
+    grid-column: 2;
+    grid-row: 1;
+
+}
+
+.left {
+
+    grid-column: 1;
+    grid-row: 2;
+
+}
+
+.horn {
+
+    grid-column: 2;
+    grid-row: 2;
+
+    background: orange;
+    color: black;
+
+}
+
+.right {
+
+    grid-column: 3;
+    grid-row: 2;
+
+}
+
+.down {
+
+    grid-column: 2;
+    grid-row: 3;
+
+}
+
+
+/* ==================== ACCESSOIRES ==================== */
+
+.access-grid {
+
+    display: grid;
+
+    gap: 12px;
+
+}
+
+.access-grid button {
+
+    width: 150px;
+    height: 60px;
+
+}
+
+.alarm-btn {
+
+    background: orange;
+    color: black;
+
+}
+
+
+/* ==================== INFOS ==================== */
+
+.info-grid {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap: 10px;
+
+}
+
+.info-item {
+
+    background: #020617;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+}
+
+.info-item small {
+
+    color: #94a3b8;
+
+}
+
+.log-box {
+
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    background: #020617;
+
+}
+
+
+/* ==================== ETATS ==================== */
+
+.active-mode {
+
+    background: #2563eb !important;
+
+    box-shadow:
+        0 0 20px #2563eb;
+
+}
+
+.active-output {
+
+    background: #16a34a !important;
+
+    box-shadow:
+        0 0 20px #16a34a;
+
+}
+
+.pressed {
+
+    background: #0ea5e9 !important;
+
+}
+
+
+/* ==================== FOOTER ==================== */
+
+.footer {
+
+    height: 50px;
+
+    border-radius: 18px;
+
+    background: #0f172a;
+
+    display: flex;
+
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+
+/* ==================== PORTRAIT ==================== */
+
+@media screen and (orientation:portrait) {
+
+    .app {
+
+        display: none;
+
+    }
+
+    .rotate-screen {
+
+        display: flex;
+
+        width: 100vw;
+        height: 100vh;
+
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+
+    }
+
+    .rotate-icon {
+
+        font-size: 70px;
+
+        margin-bottom: 15px;
+
+    }
+
+}
+
+/*================ ACCESSOIRES ETAT =================*/
+
+.access-grid button {
+
+    position: relative;
+
+    width: 180px;
+    height: 70px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+}
+
+.state-dot {
+
+    position: absolute;
+
+    top: 12px;
+    left: 12px;
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #475569;
+
+}
+
+.state-dot.on {
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 10px #22c55e,
+        0 0 20px #22c55e;
+
+    animation:
+        pulse 1s infinite;
+
+}
+
+.active-output {
+
+    background: #166534 !important;
+
+    box-shadow:
+        0 0 25px #22c55e;
+
+}
+
+.access-grid small {
+
+    font-size: 12px;
+
+    color: #cbd5e1;
+
+}
+
+@keyframes pulse {
+
+    0% {
+
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        transform: scale(1.3);
+
+    }
+
+    100% {
+
+        transform: scale(1);
+
+    }
+
+}
