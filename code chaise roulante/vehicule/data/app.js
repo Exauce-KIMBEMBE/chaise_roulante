@@ -1,3 +1,7 @@
+let holdInterval = null;
+let currentHoldButton = null;
+
+
 // ==================== REQUETES ====================
 
 function sendRequest(path) {
@@ -103,114 +107,70 @@ function updateActiveMode(mode) {
 
 // ==================== MAINTIEN ====================
 
-function startHoldCommand(
-    action,
-    button
-) {
+function startHoldCommand(action, button) {
 
-    button
-        .classList
-        .add(
-            "pressed"
-        );
+    if (holdInterval !== null) {
+        clearInterval(holdInterval);
+        holdInterval = null;
+    }
 
-    sendCommand(
-        action
-    );
+    currentHoldButton = button;
+
+    button.classList.add("pressed");
+
+    sendCommand(action);
+
+    holdInterval = setInterval(function () {
+        sendCommand(action);
+    }, 120);
 
 }
 
-function stopHoldCommand(
-    button
-) {
+function stopHoldCommand(button) {
 
-    button
-        .classList
-        .remove(
-            "pressed"
-        );
+    if (holdInterval !== null) {
+        clearInterval(holdInterval);
+        holdInterval = null;
+    }
 
-    sendCommand(
-        "stop"
-    );
+    if (currentHoldButton) {
+        currentHoldButton.classList.remove("pressed");
+        currentHoldButton = null;
+    }
+
+    button.classList.remove("pressed");
+
+    sendCommand("stop");
 
 }
 
 function setupHoldButtons() {
 
-    const buttons =
-
-        document.querySelectorAll(
-            ".drive-btn"
-        );
-
+    const buttons = document.querySelectorAll(".drive-btn");
 
     buttons.forEach(function (button) {
 
-        const action =
+        const action = button.dataset.action;
 
-            button.dataset.action;
+        button.addEventListener("pointerdown", function (event) {
+            event.preventDefault();
+            startHoldCommand(action, button);
+        });
 
+        button.addEventListener("pointerup", function (event) {
+            event.preventDefault();
+            stopHoldCommand(button);
+        });
 
-        button.addEventListener(
+        button.addEventListener("pointercancel", function (event) {
+            event.preventDefault();
+            stopHoldCommand(button);
+        });
 
-            "pointerdown",
-
-            function () {
-
-                startHoldCommand(
-                    action,
-                    button
-                );
-
-            }
-
-        );
-
-
-        button.addEventListener(
-
-            "pointerup",
-
-            function () {
-
-                stopHoldCommand(
-                    button
-                );
-
-            }
-
-        );
-
-
-        button.addEventListener(
-
-            "pointerleave",
-
-            function () {
-
-                stopHoldCommand(
-                    button
-                );
-
-            }
-
-        );
-
-
-        button.addEventListener(
-
-            "touchcancel",
-
-            function () {
-
-                stopHoldCommand(
-                    button
-                );
-
-            }
-
-        );
+        button.addEventListener("pointerleave", function (event) {
+            event.preventDefault();
+            stopHoldCommand(button);
+        });
 
     });
 
